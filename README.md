@@ -24,6 +24,7 @@ This Python DHCP server
 - **Configuración Centralizada**: Se añadió un archivo `config.py` para definir los parámetros del servidor (puerto del servidor web, interfaces de red, IP pool y configuración DHCP).
 - **Módulos de Autenticación y Registro**: Nuevos flujos para administrar usuarios y registros.
 - **Estructura Modular**: Los componentes web están empaquetados en su propio módulo (`web_server/`).
+- **Herramientas de Testeo y Documentación**: Mejora en la documentación y adición de un servidor web con herramientas para testear equipos de red, enlaces Wi-Fi (AP) y conexiones locales sin necesidad de contar con acceso WAN cercano.
 
 Have a look at:
 
