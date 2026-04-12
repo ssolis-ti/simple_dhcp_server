@@ -1,0 +1,13 @@
+"\"
+[Unit]
+Description=DHCP Server and Web Tools
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /path/to/simple_dhcp_server/run.py
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
+\""

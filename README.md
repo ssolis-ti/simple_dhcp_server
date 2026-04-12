@@ -18,6 +18,13 @@ This Python DHCP server
 - remembers addresses in the `hosts.csv` file.
 - can be configured to serve all DHCP options using Python
 
+## Nuevas Mejoras (Fork 2026)
+
+- **Servidor Web Integrado**: Incluye un servidor web Flask que corre junto al servidor DHCP usando `threading` (ejecutable vía `run.py`).
+- **Configuración Centralizada**: Se añadió un archivo `config.py` para definir los parámetros del servidor (puerto del servidor web, interfaces de red, IP pool y configuración DHCP).
+- **Módulos de Autenticación y Registro**: Nuevos flujos para administrar usuarios y registros.
+- **Estructura Modular**: Los componentes web están empaquetados en su propio módulo (`web_server/`).
+
 Have a look at:
 
 - The [official website][web] for installation and configuration instructions.
