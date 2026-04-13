@@ -1,4 +1,9 @@
 import os
+import sys
+
+# Agregar la carpeta "vendor" al PATH de Python para cargar las librerías portables
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vendor'))
+
 import threading
 from simple_dhcp_server.dhcp import DHCPServer, DHCPServerConfiguration
 from web_server.app import run_flask_server
