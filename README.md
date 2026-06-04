@@ -1,111 +1,118 @@
-# Simple DHCP Server
-[English](#english) | [Español](#español)
+# 🔌 Simple DHCP Server & Flask Dashboard
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3" />
+  <img src="https://img.shields.io/badge/Flask-2.x-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask" />
+  <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="MIT License" />
+  <img src="https://img.shields.io/badge/Portability-Offline--First-success?style=for-the-badge" alt="Portable" />
+</p>
+
+<p align="center">
+  <a href="#english-version">🇬🇧 English</a> •
+  <a href="#versión-en-español">🇪🇸 Español</a>
+</p>
 
 ---
 
-## English
+## 🇬🇧 English Version
 
-This is a purely Python DHCP server. Originally, it required no external libraries. With the 2026 Fork, some dependencies (like Flask) were added, but they are now **vendored locally** inside the `vendor/` folder so you DO NOT need to install anything via `pip`. Just run the script, making the project fully portable.
+This is a lightweight, pure Python DHCP server. Originally, it required no external libraries. With the **2026 Fork**, additional features (like a Flask web dashboard) were integrated. All dependencies are now **vendored locally** inside the `vendor/` directory, meaning the server is **100% portable, offline-first, and requires no `pip install` commands**.
 
-It was tested under Ubuntu 14 with Python and Windows 7. It does not use any operating system specific Python functions, so it should work when Python 3 works.
+### 🌟 Key Features
 
-![images/dhcpgui.png](images/dhcpgui.png)  
-dhcpgui lists MAC address, IP address and host name.
+* **Visual Client Dashboard:** Lists MAC addresses, IP leases, and hostnames in real-time.
+* **Smart Delay Assignment:** Assigns IP addresses 10 seconds later than standard DHCP servers, allowing it to safely coexist in networks that already have a running DHCP server.
+* **Persistent Leases:** Saves IP allocations locally to a `hosts.csv` file.
+* **Bridges Local Connections:** Perfect for testing network equipment, Wi-Fi access points (APs), and local setups without WAN access.
 
-This DHCP server program will assign IP addresses ten seconds after it received packets from clients. So it can be used in networks that already have a dhcp server running.
+### 🚀 Fork 2026 Enhancements
 
-This Python DHCP server
+* **Threaded Flask Server:** Runs a Flask web server side-by-side with the DHCP service using native Python `threading` (executable via `run.py`).
+* **Centralized Configuration:** Configured via `config.py` (manage port, bind address, netmask, lease time, and IP pools easily).
+* **Modular Codebase:** Organizes web views and dashboard functions under the `web_server/` module.
+* **Vendored Dependencies:** Portability ensured by placing Flask, Scapy, and other modules in `vendor/` to allow zero-config execution.
 
-- shows clients in the network
-- lists IP address, Mac address and host name
-- highlights recently refreshed/added clients
-- assigns IP addresses 10 seconds later than usual DHCP servers
-- remembers addresses in the `hosts.csv` file.
-- can be configured to serve all DHCP options using Python
+### 🛠️ Quick Start
 
-### New Improvements (Fork 2026)
+#### 1. Configuration
+Open `config.py` and adjust the binding interface and IP range:
+```python
+# Server Configuration
+DHCP_BIND_ADDRESS = "192.168.1.1"   # Your static IP
+DHCP_NETWORK = "192.168.1.0"        # Target subnet
+DHCP_SUBNET_MASK = "255.255.255.0"  # Subnet Mask
+DHCP_LEASE_TIME = 300               # Lease time in seconds
+WEB_PORT = 80                       # Web Panel Port
+```
 
-- **Integrated Web Server**: Includes a Flask web server that runs alongside the DHCP server using `threading` (executable via `run.py`).
-- **Centralized Configuration**: A `config.py` file was added to define server parameters (web server port, network interfaces, IP pool, and DHCP configuration).
-- **Authentication and Registration Modules**: New flows to manage users and registrations.
-- **Modular Structure**: The web components are packaged in their own module (`web_server/`).
-- **Testing Tools and Documentation**: Improved documentation and the addition of a web server with tools to test network equipment, Wi-Fi links (AP), and local connections without needing nearby WAN access.
+#### 2. Running the Server
+> [!IMPORTANT]
+> Running a DHCP server requires binding to privileged ports. You **must** run the script with administrative privileges.
 
-### Quick Start and Usage Instructions (Fork)
-
-1. **Dependencies Pre-installed**: 
-   All required packages (Flask, Scapy, etc.) are already included locally in the `vendor/` folder. **No internet or pip installation is required!**
-
-2. **Configure Network and Ports**:
-   Open the `config.py` file and edit the interface or IP where you want to listen, as well as the DHCP segment you are going to distribute.
-   - `DHCP_BIND_ADDRESS` = your static IP or local network.
-   - `DHCP_NETWORK` / `DHCP_SUBNET_MASK` = the DHCP subnet and network mask.
-
-3. **Run the Unified Server**:
-   Since DHCP requires special permissions, run the main script in your terminal (as Administrator or `root` in Linux):
-   ```bash
-   python run.py
-   ```
-   *This will start the DHCP Server to distribute IPs and the Web Server (usually on `http://<Your-Ip>:5000`) simultaneously. From the web panel, you can perform network tests or register new devices.*
-
-Have a look at:
-
-- The [official website][web] for installation and configuration instructions.
-- The [source code][source].
-- The [project translation on Weblate][weblate].
+* **Windows (Administrator PowerShell/CMD):**
+  ```bash
+  python run.py
+  ```
+* **Linux / macOS:**
+  ```bash
+  sudo python run.py
+  ```
+*This starts both the DHCP server and the Web Dashboard (on `http://<DHCP_BIND_ADDRESS>:<WEB_PORT>`).*
 
 ---
 
-## Español
+## 🇪🇸 Versión en Español
 
-Este es un servidor DHCP en Python. Originalmente no requería bibliotecas externas. Con el Fork 2026 se añadieron dependencias (como Flask), pero ahora vienen **incluidas localmente** en la carpeta `vendor/`. NO es necesario instalar nada a través de `pip`, lo cual hace al proyecto totalmente portable y listo para usar offline.
+Este es un servidor DHCP ligero desarrollado puramente en Python. Originalmente no requería librerías externas. Con el **Fork 2026**, se integraron funcionalidades adicionales (como un panel web con Flask). Todas las dependencias vienen **empaquetadas localmente** dentro del directorio `vendor/`, lo que hace que el servidor sea **100% portable, autónomo y listo para usar sin necesidad de `pip install`**.
 
-Fue probado bajo Ubuntu 14 con Python y Windows 7. No utiliza ninguna función de Python específica del sistema operativo, por lo que debería funcionar siempre que Python 3 funcione.
+### 🌟 Características Principales
 
-![images/dhcpgui.png](images/dhcpgui.png)  
-dhcpgui lista la dirección MAC, la dirección IP y el nombre de host.
+* **Panel de Control Visual:** Muestra direcciones MAC, IPs asignadas y nombres de host de clientes en tiempo real.
+* **Asignación Retardada Inteligente:** Asigna direcciones IP 10 segundos después de recibir la solicitud, lo que le permite coexistir de forma segura en redes que ya poseen un servidor DHCP activo.
+* **Arrendamientos Persistentes:** Registra y recuerda las asignaciones locales en el archivo `hosts.csv`.
+* **Ideal para Laboratorios:** Excelente herramienta para testear equipos de red, puntos de acceso Wi-Fi (AP) y conexiones locales sin requerir salida WAN.
 
-Este programa de servidor DHCP asignará direcciones IP diez segundos después de recibir paquetes de los clientes. Por lo tanto, se puede utilizar en redes que ya tienen un servidor DHCP en ejecución.
+### 🚀 Mejoras del Fork 2026
 
-Este servidor DHCP en Python
+* **Servidor Flask Concurrente:** Ejecuta la interfaz web de forma paralela al servicio DHCP mediante hilos nativos (`threading`) a través del archivo `run.py`.
+* **Configuración Centralizada:** Control total mediante `config.py` (edita puertos, subredes, máscaras, IPs de escucha y tiempos de arrendamiento).
+* **Código Modularizado:** Estructura limpia que independiza la interfaz web en la carpeta `web_server/`.
+* **Cero Instalaciones:** Contiene librerías como Flask y Scapy en `vendor/` para ejecutar el servidor inmediatamente fuera de línea.
 
-- muestra los clientes en la red
-- lista la dirección IP, dirección MAC y nombre de host
-- resalta los clientes actualizados/añadidos recientemente
-- asigna direcciones IP 10 segundos más tarde que los servidores DHCP habituales
-- recuerda las direcciones en el archivo `hosts.csv`
-- se puede configurar para proporcionar todas las opciones DHCP usando Python
+### 🛠️ Inicio Rápido
 
-### Nuevas Mejoras (Fork 2026)
+#### 1. Configuración
+Abre el archivo `config.py` y define los parámetros del servidor:
+```python
+# Configuración del Servidor
+DHCP_BIND_ADDRESS = "192.168.1.1"   # Tu IP estática local
+DHCP_NETWORK = "192.168.1.0"        # Subred del DHCP
+DHCP_SUBNET_MASK = "255.255.255.0"  # Máscara de subred
+DHCP_LEASE_TIME = 300               # Tiempo de arriendo (segundos)
+WEB_PORT = 80                       # Puerto de la interfaz web
+```
 
-- **Servidor Web Integrado**: Incluye un servidor web Flask que corre junto al servidor DHCP usando `threading` (ejecutable vía `run.py`).
-- **Configuración Centralizada**: Se añadió un archivo `config.py` para definir los parámetros del servidor (puerto del servidor web, interfaces de red, IP pool y configuración DHCP).
-- **Módulos de Autenticación y Registro**: Nuevos flujos para administrar usuarios y registros.
-- **Estructura Modular**: Los componentes web están empaquetados en su propio módulo (`web_server/`).
-- **Herramientas de Testeo y Documentación**: Mejora en la documentación y adición de un servidor web con herramientas para testear equipos de red, enlaces Wi-Fi (AP) y conexiones locales sin necesidad de contar con acceso WAN cercano.
+#### 2. Ejecutar el Servidor
+> [!IMPORTANT]
+> Los servidores DHCP requieren unirse a puertos con privilegios elevados. **Es obligatorio** ejecutar la aplicación con permisos de administrador.
 
-### Inicio Rápido e Instrucciones de Uso (Fork)
+* **Windows (PowerShell/CMD como Administrador):**
+  ```bash
+  python run.py
+  ```
+* **Linux / macOS:**
+  ```bash
+  sudo python run.py
+  ```
+**Esto iniciará concurrentemente el servidor DHCP y el panel web en `http://<DHCP_BIND_ADDRESS>:<WEB_PORT>`.*
 
-1. **Dependencias Preinstaladas**: 
-   Todos los paquetes necesarios (Flask, Scapy, etc.) ya están incluidos de forma local en la carpeta `vendor/`. **¡No se requiere internet ni instalación con pip!**
+---
 
-2. **Configurar la Red y Puertos**:
-   Abre el archivo `config.py` y edita la interfaz o IP donde quieres escuchar, así como el segmento DHCP que vas a repartir.
-   - `DHCP_BIND_ADDRESS` = tu IP estática o red local.
-   - `DHCP_NETWORK` / `DHCP_SUBNET_MASK` = la subred y máscara de red del DHCP.
+## 🔗 Project References / Referencias
 
-3. **Ejecutar el Servidor Unificado**:
-   Dado que el DHCP requiere permisos especiales, ejecuta el script principal en tu terminal (como Administrador o `root` en Linux):
-   ```bash
-   python run.py
-   ```
-   *Esto iniciará el Servidor DHCP para repartir IPs y el Servidor Web (usualmente en `http://<Tu-Ip>:5000`) de forma simultánea. Desde el panel web podrás hacer pruebas de red o registrar nuevos dispositivos.*
-
-Échale un vistazo a:
-
-- El [sitio web oficial][web] para las instrucciones de instalación y configuración.
-- El [código fuente][source].
-- La [traducción del proyecto en Weblate][weblate].
+* [Official Website / Sitio Web Oficial][web]
+* [Original Repository / Repositorio Original][source]
+* [Translations / Traducciones Weblate][weblate]
 
 [web]: https://dhcp.quelltext.eu
 [source]: https://github.com/niccokunzmann/simple_dhcp_server/
